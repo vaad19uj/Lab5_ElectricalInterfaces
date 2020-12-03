@@ -87,20 +87,36 @@ void stepperMove(){
 	static int state = 0;
 	switch(state){
 	case 1:
+		// orange
+
 		break;
 	case 2:
+		// orange and yellow
+
 		break;
 	case 3:
+		// yellow
+
 		break;
 	case 4:
+		// yellow and pink
+
 		break;
 	case 5:
+		// pink
+
 		break;
 	case 6:
+		// pink and blue
+
 		break;
 	case 7:
+		// blue
+
 		break;
 	case 8:
+		// orange and blue
+
 		break;
 	default:
 		break;
