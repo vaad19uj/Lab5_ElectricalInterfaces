@@ -110,6 +110,10 @@ void RCServo(){
 
 }
 
+void scaleADCVal(){
+
+}
+
 void joystickADC(){
 	HAL_ADC_Start(&hadc1);
 	if(HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY) == HAL_OK){
@@ -119,6 +123,10 @@ void joystickADC(){
 			}
 	}
 	HAL_ADC_Stop(&hadc1);
+}
+
+void cameraPanTilt(){
+
 }
 
 /* USER CODE END 0 */
@@ -162,6 +170,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  cameraPanTilt();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
