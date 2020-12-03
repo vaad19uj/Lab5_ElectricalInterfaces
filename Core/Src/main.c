@@ -84,7 +84,8 @@ void setPulseWidth(float time){
 }
 
 void stepperMove(){
-	switch(direction){
+	static int state = 0;
+	switch(state){
 	case 1:
 		break;
 	case 2:
@@ -107,11 +108,15 @@ void stepperMove(){
 }
 
 void RCServo(){
-
+	float time = scaleADCVal();
+	setPulseWidth(time);
 }
 
-void scaleADCVal(){
+float scaleADCVal(){
+	// lowest = 0.5 and highest = 2.5
+	float scaledVal = 0.5;
 
+	return scaledVal;
 }
 
 void joystickADC(){
@@ -126,7 +131,10 @@ void joystickADC(){
 }
 
 void cameraPanTilt(){
-
+	joystickADC();
+	stepperMove();
+	RCServo();
+	HAL_Delay(1);
 }
 
 /* USER CODE END 0 */
