@@ -67,8 +67,9 @@ static void MX_TIM1_Init(void);
 
 void setPulseWidth(float time){
 	// calculate PWM value
-	pwm_time = 0;
+	float pwm_time = 0;
 	int new_pwm_val = 0;
+	int max_val = 8076;
 
 	// check if values are outside of range
 	if(time < 0.5)
@@ -77,7 +78,8 @@ void setPulseWidth(float time){
 		pwm_time = 2.5;
 
 	// calculate new value
-
+	float percentDutyCycle = pwm_time/2.5;
+	new_pwm_val = percentDutyCycle * max_val;
 
 	// update pwm
 	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, new_pwm_val);
@@ -88,37 +90,80 @@ void stepperMove(){
 	switch(state){
 	case 1:
 		// orange
+		HAL_GPIO_WritePin(Driver_4_GPIO_Port, Driver_4_Pin, SET);
 
+		HAL_GPIO_WritePin(Driver_1_GPIO_Port, Driver_1_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_2_GPIO_Port, Driver_2_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_3_GPIO_Port, Driver_3_Pin, RESET);
 		break;
 	case 2:
 		// orange and yellow
+		HAL_GPIO_WritePin(Driver_4_GPIO_Port, Driver_4_Pin, SET);
+		HAL_GPIO_WritePin(Driver_3_GPIO_Port, Driver_3_Pin, SET);
 
+		HAL_GPIO_WritePin(Driver_1_GPIO_Port, Driver_1_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_2_GPIO_Port, Driver_2_Pin, RESET);
 		break;
 	case 3:
 		// yellow
+		HAL_GPIO_WritePin(Driver_3_GPIO_Port, Driver_3_Pin, SET);
+
+		HAL_GPIO_WritePin(Driver_1_GPIO_Port, Driver_1_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_4_GPIO_Port, Driver_4_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_2_GPIO_Port, Driver_2_Pin, RESET);
 
 		break;
 	case 4:
 		// yellow and pink
+		HAL_GPIO_WritePin(Driver_3_GPIO_Port, Driver_3_Pin, SET);
+		HAL_GPIO_WritePin(Driver_2_GPIO_Port, Driver_2_Pin, SET);
+
+		HAL_GPIO_WritePin(Driver_1_GPIO_Port, Driver_1_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_4_GPIO_Port, Driver_4_Pin, RESET);
 
 		break;
 	case 5:
 		// pink
+		HAL_GPIO_WritePin(Driver_2_GPIO_Port, Driver_2_Pin, SET);
+
+		HAL_GPIO_WritePin(Driver_1_GPIO_Port, Driver_1_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_3_GPIO_Port, Driver_3_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_4_GPIO_Port, Driver_4_Pin, RESET);
 
 		break;
 	case 6:
 		// pink and blue
+		HAL_GPIO_WritePin(Driver_2_GPIO_Port, Driver_2_Pin, SET);
+		HAL_GPIO_WritePin(Driver_1_GPIO_Port, Driver_1_Pin, SET);
+
+		HAL_GPIO_WritePin(Driver_3_GPIO_Port, Driver_3_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_4_GPIO_Port, Driver_4_Pin, RESET);
 
 		break;
 	case 7:
 		// blue
+		HAL_GPIO_WritePin(Driver_1_GPIO_Port, Driver_1_Pin, SET);
+
+		HAL_GPIO_WritePin(Driver_3_GPIO_Port, Driver_3_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_4_GPIO_Port, Driver_4_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_2_GPIO_Port, Driver_2_Pin, RESET);
 
 		break;
 	case 8:
 		// orange and blue
+		HAL_GPIO_WritePin(Driver_1_GPIO_Port, Driver_1_Pin, SET);
+		HAL_GPIO_WritePin(Driver_4_GPIO_Port, Driver_4_Pin, SET);
+
+		HAL_GPIO_WritePin(Driver_3_GPIO_Port, Driver_3_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_2_GPIO_Port, Driver_2_Pin, RESET);
 
 		break;
 	default:
+		// all pins low
+		HAL_GPIO_WritePin(Driver_1_GPIO_Port, Driver_1_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_4_GPIO_Port, Driver_4_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_3_GPIO_Port, Driver_3_Pin, RESET);
+		HAL_GPIO_WritePin(Driver_2_GPIO_Port, Driver_2_Pin, RESET);
 		break;
 	}
 }
