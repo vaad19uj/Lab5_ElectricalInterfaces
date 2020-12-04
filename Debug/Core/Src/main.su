@@ -1,0 +1,14 @@
+main.c:69:6:setPulseWidth	32	static
+main.c:92:6:directionStepper	4	static
+main.c:101:6:stepperMove	8	static
+main.c:188:7:scaleADCVal	24	static
+main.c:198:6:RCServo	16	static
+main.c:204:6:joystickADC	8	static
+main.c:215:6:cameraPanTilt	8	static
+main.c:228:5:main	8	static
+main.c:276:6:SystemClock_Config	88	static
+main.c:321:13:MX_ADC1_Init	24	static
+main.c:379:13:MX_TIM1_Init	96	static
+main.c:454:13:MX_USART2_UART_Init	8	static
+main.c:487:13:MX_GPIO_Init	48	static
+main.c:543:6:Error_Handler	4	static,ignoring_inline_asm

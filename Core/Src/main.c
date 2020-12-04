@@ -49,6 +49,7 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 int channel_1 = 0, channel_2=0;
 int8_t direction;
+int state = 0;
 
 /* USER CODE END PV */
 
@@ -76,6 +77,8 @@ void setPulseWidth(float time){
 		pwm_time = 0.5;
 	if(time > 2.5)
 		pwm_time = 2.5;
+	else
+		pwm_time = time;
 
 	// calculate new value
 	float percentDutyCycle = pwm_time/2.5;
@@ -83,10 +86,24 @@ void setPulseWidth(float time){
 
 	// update pwm
 	__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, new_pwm_val);
+	//HAL_Delay(200);
+}
+
+void directionStepper(){
+	// channel 1
+
+	if(channel_1 > 3000)
+		direction +=1;
+	if(channel_1 < 1000)
+		direction -=1;
 }
 
 void stepperMove(){
-	static int state = 0;
+
+	directionStepper();
+
+	state = direction%8+1;
+
 	switch(state){
 	case 1:
 		// orange
@@ -168,17 +185,21 @@ void stepperMove(){
 	}
 }
 
+float scaleADCVal(){
+	// lowest = 0.5 and highest = 2.5
+	float min = 0.5;
+	float max = 2.5;
+
+	float scaled = ((max - min) * (channel_2 - 10)) / (4000 - 10)+min;
+
+	return scaled;
+}
+
 void RCServo(){
 	float time = scaleADCVal();
 	setPulseWidth(time);
 }
 
-float scaleADCVal(){
-	// lowest = 0.5 and highest = 2.5
-	float scaledVal = 0.5;
-
-	return scaledVal;
-}
 
 void joystickADC(){
 	HAL_ADC_Start(&hadc1);
@@ -194,8 +215,8 @@ void joystickADC(){
 void cameraPanTilt(){
 	joystickADC();
 	stepperMove();
-	RCServo();
 	HAL_Delay(1);
+	RCServo();
 }
 
 /* USER CODE END 0 */
@@ -232,6 +253,7 @@ int main(void)
   MX_ADC1_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 
   /* USER CODE END 2 */
 
